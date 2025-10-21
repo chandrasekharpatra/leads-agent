@@ -8,7 +8,7 @@ import { login } from './routes';
 const app = new Hono<{ Bindings: Env }>();
 
 app.use('*', async (c, next) => {
-	const middleware = tsyringe((container) => {});
+	const middleware = tsyringe(() => {});
 	return middleware(c, next);
 });
 

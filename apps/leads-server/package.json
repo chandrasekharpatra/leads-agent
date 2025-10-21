@@ -7,13 +7,15 @@
 		"dev": "wrangler dev",
 		"start": "wrangler dev",
 		"test": "vitest",
+		"lint": "eslint .",
 		"cf-typegen": "wrangler types"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
 		"typescript": "^5.5.2",
 		"vitest": "~3.2.0",
-		"wrangler": "^4.44.0"
+		"wrangler": "^4.44.0",
+		"@repo/eslint-config": "*"
 	},
 	"dependencies": {
 		"hono": "^4.10.1",
