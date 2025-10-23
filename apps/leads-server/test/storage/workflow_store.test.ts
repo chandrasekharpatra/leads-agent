@@ -6,47 +6,46 @@ import { workflowIdGenerator } from '../../src/utils/id_utils';
 import { initTsyringe } from '../tsyringe';
 
 describe('Workflow store CRUD tests', () => {
-
 	beforeAll(() => {
-        initTsyringe();
-    })
+		initTsyringe();
+	});
 
-    afterAll(() => {
-        container.clearInstances();
-        container.reset()
-    })
+	afterAll(() => {
+		container.clearInstances();
+		container.reset();
+	});
 
-    it('workflow crud operations', async () => {
-        const workflowStore = container.resolve<WorkflowStore>('WorkflowStore');
+	it('workflow crud operations', async () => {
+		const workflowStore = container.resolve<WorkflowStore>('WorkflowStore');
 
-        const workflow: Workflow = {
-            workflowId: workflowIdGenerator(),
-            data: {
-                state: "PENDING"
-            },
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
-        }
+		const workflow: Workflow = {
+			workflowId: workflowIdGenerator(),
+			data: {
+				state: 'PENDING',
+			},
+			createdAt: Date.now(),
+			updatedAt: Date.now(),
+		};
 
-        await workflowStore.createWorkflow(workflow);
+		await workflowStore.createWorkflow(workflow);
 
-        const fetchedWorkflow = await workflowStore.getWorkflowById(workflow.workflowId);
-        expect(fetchedWorkflow).toBeDefined();
-        expect(fetchedWorkflow?.data.state).toBe("PENDING");
+		const fetchedWorkflow = await workflowStore.getWorkflowById(workflow.workflowId);
+		expect(fetchedWorkflow).toBeDefined();
+		expect(fetchedWorkflow?.data.state).toBe('PENDING');
 
-        await workflowStore.updateWorkflow({
-            ...workflow,
-            data: {
-                state: "IN_PROGRESS"
-            }
-        });
+		await workflowStore.updateWorkflow({
+			...workflow,
+			data: {
+				state: 'IN_PROGRESS',
+			},
+		});
 
-        const updatedWorkflow = await workflowStore.getWorkflowById(workflow.workflowId);
-        expect(updatedWorkflow).toBeDefined();
-        expect(updatedWorkflow?.data.state).toBe("IN_PROGRESS");
+		const updatedWorkflow = await workflowStore.getWorkflowById(workflow.workflowId);
+		expect(updatedWorkflow).toBeDefined();
+		expect(updatedWorkflow?.data.state).toBe('IN_PROGRESS');
 
-        await workflowStore.deleteWorkflow(workflow.workflowId);
-        const deletedWorkflow = await workflowStore.getWorkflowById(workflow.workflowId);
-        expect(deletedWorkflow).toBeNull();
-    });
+		await workflowStore.deleteWorkflow(workflow.workflowId);
+		const deletedWorkflow = await workflowStore.getWorkflowById(workflow.workflowId);
+		expect(deletedWorkflow).toBeNull();
+	});
 });

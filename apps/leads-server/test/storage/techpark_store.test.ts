@@ -6,53 +6,52 @@ import { generateTechparkId } from '../../src/utils/id_utils';
 import { initTsyringe } from '../tsyringe';
 
 describe('Techpark store CRUD tests', () => {
-
 	beforeAll(() => {
-        initTsyringe();
-    })
+		initTsyringe();
+	});
 
-    afterAll(() => {
-        container.clearInstances();
-        container.reset()
-    })
+	afterAll(() => {
+		container.clearInstances();
+		container.reset();
+	});
 
-    it('techpark crud operations', async () => {
-        const techparkStore = container.resolve<TechParkStore>('TechParkStore');
+	it('techpark crud operations', async () => {
+		const techparkStore = container.resolve<TechParkStore>('TechParkStore');
 
-        const techpark: Techpark = {
-            techparkId: generateTechparkId('Electronic City', 'Phase 1, Bangalore'),
-            data: {
-                name: 'Electronic City',
-                pincode: '560100',
-                address: 'Phase 1, Bangalore'
-            },
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
-        }
+		const techpark: Techpark = {
+			techparkId: generateTechparkId('Electronic City', 'Phase 1, Bangalore'),
+			data: {
+				name: 'Electronic City',
+				pincode: '560100',
+				address: 'Phase 1, Bangalore',
+			},
+			createdAt: Date.now(),
+			updatedAt: Date.now(),
+		};
 
-        await techparkStore.createTechPark(techpark);
+		await techparkStore.createTechPark(techpark);
 
-        const fetchedTechpark = await techparkStore.getTechParkById(techpark.techparkId);
-        expect(fetchedTechpark).toBeDefined();
-        expect(fetchedTechpark?.data.name).toBe('Electronic City');
-        expect(fetchedTechpark?.data.pincode).toBe('560100');
+		const fetchedTechpark = await techparkStore.getTechParkById(techpark.techparkId);
+		expect(fetchedTechpark).toBeDefined();
+		expect(fetchedTechpark?.data.name).toBe('Electronic City');
+		expect(fetchedTechpark?.data.pincode).toBe('560100');
 
-        await techparkStore.updateTechPark({
-            ...techpark,
-            data: {
-                name: 'Electronic City',
-                pincode: '560101',
-                address: 'Phase 2, Bangalore'
-            }
-        });
+		await techparkStore.updateTechPark({
+			...techpark,
+			data: {
+				name: 'Electronic City',
+				pincode: '560101',
+				address: 'Phase 2, Bangalore',
+			},
+		});
 
-        const updatedTechpark = await techparkStore.getTechParkById(techpark.techparkId);
-        expect(updatedTechpark).toBeDefined();
-        expect(updatedTechpark?.data.address).toBe('Phase 2, Bangalore');
-        expect(updatedTechpark?.data.pincode).toBe('560101');
+		const updatedTechpark = await techparkStore.getTechParkById(techpark.techparkId);
+		expect(updatedTechpark).toBeDefined();
+		expect(updatedTechpark?.data.address).toBe('Phase 2, Bangalore');
+		expect(updatedTechpark?.data.pincode).toBe('560101');
 
-        await techparkStore.deleteTechPark(techpark.techparkId);
-        const deletedTechpark = await techparkStore.getTechParkById(techpark.techparkId);
-        expect(deletedTechpark).toBeNull();
-    });
+		await techparkStore.deleteTechPark(techpark.techparkId);
+		const deletedTechpark = await techparkStore.getTechParkById(techpark.techparkId);
+		expect(deletedTechpark).toBeNull();
+	});
 });

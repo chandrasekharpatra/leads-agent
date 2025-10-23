@@ -25,7 +25,7 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 			.values({
 				workflow_id: mapping.workflowId,
 				task_id: mapping.taskId,
-                state: mapping.state,
+				state: mapping.state,
 				created_at: date,
 				updated_at: date,
 			})
@@ -67,7 +67,7 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 			const mappings = results.map((result) => ({
 				workflowId: result.workflow_id,
 				taskId: result.task_id,
-                state: result.state as WorkflowState,
+				state: result.state as WorkflowState,
 				createdAt: result.created_at ? result.created_at.getTime() : 0,
 				updatedAt: result.updated_at ? result.updated_at.getTime() : 0,
 			}));
@@ -103,7 +103,7 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 			const mappings = results.map((result) => ({
 				workflowId: result.workflow_id,
 				taskId: result.task_id,
-                state: result.state as WorkflowState,
+				state: result.state as WorkflowState,
 				createdAt: result.created_at ? result.created_at.getTime() : 0,
 				updatedAt: result.updated_at ? result.updated_at.getTime() : 0,
 			}));
@@ -135,7 +135,7 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 			const mappings = results.map((result) => ({
 				workflowId: result.workflow_id,
 				taskId: result.task_id,
-                state: result.state as WorkflowState,
+				state: result.state as WorkflowState,
 				createdAt: result.created_at ? result.created_at.getTime() : 0,
 				updatedAt: result.updated_at ? result.updated_at.getTime() : 0,
 			}));
@@ -173,7 +173,7 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 		return {
 			workflowId: result.workflow_id,
 			taskId: result.task_id,
-            state: result.state as WorkflowState,
+			state: result.state as WorkflowState,
 			createdAt: result.created_at ? result.created_at.getTime() : 0,
 			updatedAt: result.updated_at ? result.updated_at.getTime() : 0,
 		};
@@ -192,7 +192,7 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 		await this.createMapping({
 			workflowId,
 			taskId,
-            state: 'PENDING',
+			state: 'PENDING',
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 		});
