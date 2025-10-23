@@ -1,6 +1,5 @@
 declare module 'cloudflare:test' {
 	interface ProvidedEnv extends Env {
-		JWT_SECRET: string;
-		PERPLEXITY_API_KEY: string;
+		TEST_MIGRATIONS: D1Migration[];
 	}
 }

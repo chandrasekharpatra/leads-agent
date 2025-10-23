@@ -9,7 +9,7 @@
 	"compatibility_date": "2025-10-14",
 	"observability": {
 		"enabled": true
-	}
+	},
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
@@ -25,7 +25,10 @@
 	 * Environment Variables
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
 	 */
-	// "vars": { "MY_VARIABLE": "production_value" }
+	"vars": {
+		"JWT_SECRET": "",
+		"PERPLEXITY_API_KEY": ""
+	},
 	/**
 	 * Note: Use secrets to store sensitive data.
 	 * https://developers.cloudflare.com/workers/configuration/secrets/
@@ -40,4 +43,11 @@
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
 	 */
 	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+	 "d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "toastmasters-leads",
+			"database_id": "2089ed42-e224-4e81-a356-27a9afe8ebf9"
+		}
+	],
 }

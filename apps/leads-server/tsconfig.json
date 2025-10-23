@@ -31,13 +31,18 @@
 		/* Ensure that casing is correct in imports. */
 		"forceConsistentCasingInFileNames": true,
 
+		/* Enable experimental decorator support */
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+
 		/* Enable all strict type-checking options. */
 		"strict": true,
 
 		/* Skip type checking all .d.ts files. */
 		"skipLibCheck": true,
 		"types": [
-			"./worker-configuration.d.ts"
+			"./worker-configuration.d.ts",
+			"@types/node"
 		]
 	},
 	"exclude": ["test"],

@@ -1,0 +1,14 @@
+-- Migration number: 0006 	 2025-10-22T17:04:56.661Z
+DROP TABLE IF EXISTS tasks;
+
+DROP INDEX IF EXISTS idx_tasks_task;
+
+CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    task_id VARCHAR(255) NOT NULL,
+    data BLOB NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX idx_tasks_task ON tasks (task_id);
