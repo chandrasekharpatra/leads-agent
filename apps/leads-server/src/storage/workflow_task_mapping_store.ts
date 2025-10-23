@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/d1';
 import { inject, singleton } from 'tsyringe-neo';
 import { workflow_task_mapping_d1_schema } from '../drizzle/workflow_schema';
 import { PaginatedResponse, SyncRequest } from '../models/io';
-import { WorkflowTaskMapping } from './stored/stored_workflow';
+import { WorkflowState, WorkflowTaskMapping } from './stored/stored_workflow';
 
 interface WorkflowTaskMappingStore {
 	createMapping(mapping: WorkflowTaskMapping): Promise<void>;
@@ -25,6 +25,7 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 			.values({
 				workflow_id: mapping.workflowId,
 				task_id: mapping.taskId,
+                state: mapping.state,
 				created_at: date,
 				updated_at: date,
 			})
@@ -64,9 +65,9 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 				.orderBy(desc(workflow_task_mapping_d1_schema.id))
 				.execute();
 			const mappings = results.map((result) => ({
-				id: result.id,
 				workflowId: result.workflow_id,
 				taskId: result.task_id,
+                state: result.state as WorkflowState,
 				createdAt: result.created_at ? result.created_at.getTime() : 0,
 				updatedAt: result.updated_at ? result.updated_at.getTime() : 0,
 			}));
@@ -100,9 +101,9 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 				.orderBy(desc(workflow_task_mapping_d1_schema.id))
 				.execute();
 			const mappings = results.map((result) => ({
-				id: result.id,
 				workflowId: result.workflow_id,
 				taskId: result.task_id,
+                state: result.state as WorkflowState,
 				createdAt: result.created_at ? result.created_at.getTime() : 0,
 				updatedAt: result.updated_at ? result.updated_at.getTime() : 0,
 			}));
@@ -132,9 +133,9 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 				.orderBy(desc(workflow_task_mapping_d1_schema.id))
 				.execute();
 			const mappings = results.map((result) => ({
-				id: result.id,
 				workflowId: result.workflow_id,
 				taskId: result.task_id,
+                state: result.state as WorkflowState,
 				createdAt: result.created_at ? result.created_at.getTime() : 0,
 				updatedAt: result.updated_at ? result.updated_at.getTime() : 0,
 			}));
@@ -172,6 +173,7 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 		return {
 			workflowId: result.workflow_id,
 			taskId: result.task_id,
+            state: result.state as WorkflowState,
 			createdAt: result.created_at ? result.created_at.getTime() : 0,
 			updatedAt: result.updated_at ? result.updated_at.getTime() : 0,
 		};
@@ -190,6 +192,7 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 		await this.createMapping({
 			workflowId,
 			taskId,
+            state: 'PENDING',
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 		});

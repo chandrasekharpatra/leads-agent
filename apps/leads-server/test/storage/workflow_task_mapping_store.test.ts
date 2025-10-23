@@ -25,6 +25,7 @@ describe('Workflow task mapping store CRUD tests', () => {
         const mapping: WorkflowTaskMapping = {
             workflowId: workflowId,
             taskId: taskId,
+            state: 'PENDING',
             createdAt: Date.now(),
             updatedAt: Date.now(),
         }
@@ -59,6 +60,7 @@ describe('Workflow task mapping store CRUD tests', () => {
         const mapping1: WorkflowTaskMapping = {
             workflowId: workflowId,
             taskId: taskId1,
+            state: 'PENDING',
             createdAt: Date.now(),
             updatedAt: Date.now(),
         };
@@ -66,6 +68,7 @@ describe('Workflow task mapping store CRUD tests', () => {
         const mapping2: WorkflowTaskMapping = {
             workflowId: workflowId,
             taskId: taskId2,
+            state: 'PENDING',
             createdAt: Date.now(),
             updatedAt: Date.now(),
         };
@@ -73,6 +76,7 @@ describe('Workflow task mapping store CRUD tests', () => {
         const mapping3: WorkflowTaskMapping = {
             workflowId: workflowId,
             taskId: taskId3,
+            state: 'PENDING',
             createdAt: Date.now(),
             updatedAt: Date.now(),
         };

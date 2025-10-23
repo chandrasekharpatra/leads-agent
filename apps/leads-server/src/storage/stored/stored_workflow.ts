@@ -14,6 +14,7 @@ interface Workflow {
 interface WorkflowTaskMapping {
 	workflowId: string;
 	taskId: string;
+	state: WorkflowState;
 	createdAt: number;
 	updatedAt: number;
 }
