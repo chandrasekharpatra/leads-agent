@@ -9,6 +9,7 @@ interface TechParkStore {
 	getTechParkById(techparkId: string): Promise<Techpark | null>;
 	updateTechPark(park: Techpark): Promise<void>;
 	deleteTechPark(techparkId: string): Promise<void>;
+	ensureTechPark(park: Techpark): Promise<void>;
 }
 
 @singleton()
@@ -60,6 +61,15 @@ class D1TechParkStore implements TechParkStore {
 	async deleteTechPark(techparkId: string): Promise<void> {
 		const db = drizzle(this.db);
 		await db.delete(techpark_d1_schema).where(eq(techpark_d1_schema.techpark_id, techparkId)).execute();
+	}
+
+	async ensureTechPark(park: Techpark): Promise<void> {
+		const existing = await this.getTechParkById(park.techparkId);
+		if (!existing) {
+			await this.createTechPark(park);
+		} else {
+			await this.updateTechPark(park);
+		}
 	}
 }
 

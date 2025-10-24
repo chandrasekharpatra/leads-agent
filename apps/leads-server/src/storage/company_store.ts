@@ -9,6 +9,7 @@ interface CompanyStore {
 	getCompanyById(companyId: string): Promise<Company | null>;
 	updateCompany(company: Company): Promise<void>;
 	deleteCompany(companyId: string): Promise<void>;
+	ensureCompany(company: Company): Promise<void>;
 }
 
 @singleton()
@@ -60,6 +61,15 @@ class D1CompanyStore implements CompanyStore {
 	async deleteCompany(companyId: string): Promise<void> {
 		const db = drizzle(this.db);
 		await db.delete(company_d1_schema).where(eq(company_d1_schema.company_id, companyId)).execute();
+	}
+
+	async ensureCompany(company: Company): Promise<void> {
+		const existing = await this.getCompanyById(company.companyId);
+		if (!existing) {
+			await this.createCompany(company);
+		} else {
+			await this.updateCompany(company);
+		}
 	}
 }
 

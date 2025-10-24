@@ -1,15 +1,15 @@
-import { container } from 'tsyringe-neo';
-import { env } from 'cloudflare:test';
-import { D1TechParkStore, TechParkStore } from '../src/storage/techpark_store';
-import { LeadGenService, PerplexityLeadGenService } from '../src/services/lead_gen_service';
-import { CompanyStore, D1CompanyStore } from '../src/storage/company_store';
-import { PincodeTechparkMappingStore, D1PincodeTechparkMappingStore } from '../src/storage/pincode_techpark_mapping_store';
-import { TaskStore, D1TaskStore } from '../src/storage/task_store';
-import { TechparkCompanyMappingStore, D1TechparkCompanyMappingStore } from '../src/storage/techpark_company_mapping_store';
-import { UserWorkflowMappingStore, D1UserWorkflowMappingStore } from '../src/storage/user_workflow_mapping_store';
-import { WorkflowStore, D1WorkflowStore } from '../src/storage/workflow_store';
-import { WorkflowTaskMappingStore, D1WorkflowTaskMappingStore } from '../src/storage/workflow_task_mapping_store';
 import { createPerplexity, PerplexityProvider } from '@ai-sdk/perplexity';
+import { env } from 'cloudflare:test';
+import { container } from 'tsyringe-neo';
+import { LeadService, PerplexityLeadService } from '../src/services/lead_service';
+import { CompanyStore, D1CompanyStore } from '../src/storage/company_store';
+import { D1PincodeTechparkMappingStore, PincodeTechparkMappingStore } from '../src/storage/pincode_techpark_mapping_store';
+import { D1TaskStore, TaskStore } from '../src/storage/task_store';
+import { D1TechparkCompanyMappingStore, TechparkCompanyMappingStore } from '../src/storage/techpark_company_mapping_store';
+import { D1TechParkStore, TechParkStore } from '../src/storage/techpark_store';
+import { D1UserWorkflowMappingStore, UserWorkflowMappingStore } from '../src/storage/user_workflow_mapping_store';
+import { D1WorkflowStore, WorkflowStore } from '../src/storage/workflow_store';
+import { D1WorkflowTaskMappingStore, WorkflowTaskMappingStore } from '../src/storage/workflow_task_mapping_store';
 
 export const initTsyringe = () => {
 	// values
@@ -28,7 +28,7 @@ export const initTsyringe = () => {
 	container.register<UserWorkflowMappingStore>('UserWorkflowMappingStore', { useClass: D1UserWorkflowMappingStore });
 
 	// services
-	container.register<LeadGenService>('LeadGenService', { useClass: PerplexityLeadGenService });
+	container.register<LeadService>('LeadService', { useClass: PerplexityLeadService });
 
 	// llm providers
 	const perplexity = createPerplexity({

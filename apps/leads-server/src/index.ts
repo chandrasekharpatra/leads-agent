@@ -3,8 +3,9 @@ import { Hono } from 'hono';
 import 'reflect-metadata';
 import 'tslib';
 import { tsyringe } from './middleware/tysringe_middleware';
-import { login } from './routes';
-import { LeadGenService, PerplexityLeadGenService } from './services/lead_gen_service';
+import { login, workflows, leads, tasks } from './routes';
+import { LeadService, PerplexityLeadService } from './services/lead_service';
+import { WorkflowService, WorkflowServiceImpl } from './services/workflow_service';
 import { CompanyStore, D1CompanyStore } from './storage/company_store';
 import { D1PincodeTechparkMappingStore, PincodeTechparkMappingStore } from './storage/pincode_techpark_mapping_store';
 import { D1TaskStore, TaskStore } from './storage/task_store';
@@ -13,6 +14,7 @@ import { D1TechParkStore, TechParkStore } from './storage/techpark_store';
 import { D1UserWorkflowMappingStore, UserWorkflowMappingStore } from './storage/user_workflow_mapping_store';
 import { D1WorkflowStore, WorkflowStore } from './storage/workflow_store';
 import { D1WorkflowTaskMappingStore, WorkflowTaskMappingStore } from './storage/workflow_task_mapping_store';
+import { TaskService, TaskServiceImpl } from './services/task_service';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -34,7 +36,9 @@ app.use('*', async (c, next) => {
 		container.register<UserWorkflowMappingStore>('UserWorkflowMappingStore', { useClass: D1UserWorkflowMappingStore });
 
 		// services
-		container.register<LeadGenService>('LeadGenService', { useClass: PerplexityLeadGenService });
+		container.register<LeadService>('LeadService', { useClass: PerplexityLeadService });
+		container.register<WorkflowService>('WorkflowService', { useClass: WorkflowServiceImpl });
+		container.register<TaskService>('TaskService', { useClass: TaskServiceImpl });
 
 		// llm providers
 		const perplexity = createPerplexity({
@@ -46,5 +50,8 @@ app.use('*', async (c, next) => {
 });
 
 app.route('/v1/login', login);
+app.route('/v1/workflows', workflows);
+app.route('/v1/leads', leads);
+app.route('/v1/tasks', tasks);
 
 export default app;

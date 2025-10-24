@@ -67,7 +67,6 @@ describe('Task store CRUD tests', () => {
 						industry: 'Software',
 						employeeCount: 500,
 						companyAddress: 'Electronic City Phase 1',
-						hasToastmasterClub: true,
 					},
 				],
 			},

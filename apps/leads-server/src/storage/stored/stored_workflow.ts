@@ -2,6 +2,7 @@ type WorkflowState = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED';
 
 interface WorkflowData {
 	state: WorkflowState;
+	pointer?: string;
 }
 
 interface Workflow {

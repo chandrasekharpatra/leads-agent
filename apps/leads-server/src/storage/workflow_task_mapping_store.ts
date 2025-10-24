@@ -1,4 +1,4 @@
-import { and, desc, eq, gt, lt } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, lt } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { inject, singleton } from 'tsyringe-neo';
 import { workflow_task_mapping_d1_schema } from '../drizzle/workflow_schema';
@@ -98,7 +98,7 @@ class D1WorkflowTaskMappingStore implements WorkflowTaskMappingStore {
 				.from(workflow_task_mapping_d1_schema)
 				.where(and(eq(workflow_task_mapping_d1_schema.workflow_id, workflowId), gt(workflow_task_mapping_d1_schema.id, cursor.id)))
 				.limit(limit)
-				.orderBy(desc(workflow_task_mapping_d1_schema.id))
+				.orderBy(asc(workflow_task_mapping_d1_schema.id))
 				.execute();
 			const mappings = results.map((result) => ({
 				workflowId: result.workflow_id,

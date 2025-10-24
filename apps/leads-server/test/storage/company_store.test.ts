@@ -24,6 +24,8 @@ describe('Company store CRUD tests', () => {
 				name: 'Tech Corporation',
 				address: 'Electronic City Phase 1, Bangalore',
 				pincode: '560100',
+				hrProfiles: [],
+				hasToastmasterClub: false,
 			},
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
@@ -42,6 +44,8 @@ describe('Company store CRUD tests', () => {
 				name: 'Tech Corporation',
 				address: 'Electronic City Phase 2, Bangalore',
 				pincode: '560101',
+				hrProfiles: [],
+				hasToastmasterClub: false,
 			},
 		});
 
