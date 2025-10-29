@@ -41,6 +41,10 @@ interface TaskResult {
 	nextTasks: TaskData[];
 }
 
+interface JwtPayload {
+	userId: string;
+}
+
 export {
 	type Company,
 	type Profile,
@@ -51,4 +55,5 @@ export {
 	type WorkflowContext,
 	type TaskResult,
 	type TaskExecutionContext,
+	type JwtPayload,
 };

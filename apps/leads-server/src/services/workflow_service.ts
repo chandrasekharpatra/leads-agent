@@ -1,6 +1,7 @@
 import { inject, singleton } from 'tsyringe-neo';
 import { WorkflowEngine } from '../engine/workflow_engine';
 import { RequestContext } from '../models/internal';
+import { PaginatedResponse, SyncRequest } from '../models/io';
 import { Task, TaskData } from '../storage/stored/stored_task';
 import { Workflow, WorkflowData } from '../storage/stored/stored_workflow';
 import { type TaskStore } from '../storage/task_store';
@@ -13,6 +14,8 @@ interface WorkflowService {
 	startWorkflow(ctx: RequestContext, data: WorkflowData): Promise<Workflow>;
 	init(ctx: RequestContext, pincode: string): Promise<Workflow>;
 	resume(ctx: RequestContext, workflowId: string): Promise<void>;
+	fetchWorkflow(ctx: RequestContext, workflowId: string): Promise<Workflow | null>;
+	syncWorkflows(ctx: RequestContext, request: SyncRequest): Promise<PaginatedResponse<Workflow>>;
 }
 
 @singleton()
@@ -65,6 +68,32 @@ class WorkflowServiceImpl implements WorkflowService {
 
 	async resume(ctx: RequestContext, workflowId: string): Promise<void> {
 		await this.workflowEngine.execute(ctx, workflowId);
+	}
+
+	async fetchWorkflow(ctx: RequestContext, workflowId: string): Promise<Workflow | null> {
+		const mapping = await this.userWorkflowMappingStore.getMapping(ctx.userId, workflowId);
+		if (!mapping) {
+			return null;
+		}
+		return await this.workflowStore.getWorkflowById(workflowId);
+	}
+
+	async syncWorkflows(ctx: RequestContext, request: SyncRequest): Promise<PaginatedResponse<Workflow>> {
+		return this.userWorkflowMappingStore.sync(ctx.userId, request).then(async (paginatedMappings) => {
+			const workflows: Workflow[] = [];
+			const workflowIds = paginatedMappings.data.map((mapping) => mapping.workflowId);
+			const workflowMap = await this.workflowStore.getWorkflowByIds(workflowIds);
+			for (const mapping of paginatedMappings.data) {
+				const workflow = workflowMap.get(mapping.workflowId);
+				if (workflow) {
+					workflows.push(workflow);
+				}
+			}
+			return {
+				...paginatedMappings,
+				data: workflows,
+			};
+		});
 	}
 }
 

@@ -36,20 +36,24 @@ packages/
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - npm
 
 ### Install Dependencies
+
 ```sh
 npm install
 ```
 
 ### Development
+
 ```sh
 npm run dev
 ```
 
 ### Running Tests
+
 ```sh
 npm test
 ```

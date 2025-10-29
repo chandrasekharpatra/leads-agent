@@ -1,4 +1,4 @@
-import { and, desc, eq, gt, lt } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, lt } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { inject, singleton } from 'tsyringe-neo';
 import { user_workflow_mapping_d1_schema } from '../drizzle/user_schema';
@@ -94,7 +94,7 @@ class D1UserWorkflowMappingStore implements UserWorkflowMappingStore {
 				.from(user_workflow_mapping_d1_schema)
 				.where(and(eq(user_workflow_mapping_d1_schema.user_id, userId), gt(user_workflow_mapping_d1_schema.id, cursor.id)))
 				.limit(limit)
-				.orderBy(desc(user_workflow_mapping_d1_schema.id))
+				.orderBy(asc(user_workflow_mapping_d1_schema.id))
 				.execute();
 			const mappings = results.map((result) => ({
 				id: result.id,
