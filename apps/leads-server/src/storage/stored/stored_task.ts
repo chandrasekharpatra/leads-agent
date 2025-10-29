@@ -41,7 +41,14 @@ interface NoopTaskData {
 	type: 'NOOP';
 }
 
-type TaskData = PincodeTaskData | TechparkTaskData | CompanyTaskData | HiringManagerTaskData | ToastmasterTaskData | CompletedTaskData | NoopTaskData;
+type TaskData =
+	| PincodeTaskData
+	| TechparkTaskData
+	| CompanyTaskData
+	| HiringManagerTaskData
+	| ToastmasterTaskData
+	| CompletedTaskData
+	| NoopTaskData;
 
 interface CompositeData {
 	completed: TaskData[];

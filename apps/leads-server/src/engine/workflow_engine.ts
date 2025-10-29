@@ -28,17 +28,17 @@ class WorkflowEngine {
 		@inject(CompanyTaskProcessor) private companyProcessor: CompanyTaskProcessor,
 		@inject(TaskCompletedProcessor) private taskCompletedProcessor: TaskCompletedProcessor,
 		@inject(TerminalTaskProcessor) private terminalProcessor: TerminalTaskProcessor,
-        @inject(ToastmasterClubTaskProcessor) private toastmasterClubProcessor: ToastmasterClubTaskProcessor,
-        @inject(HiringManagerTaskProcessor) private hiringManagerProcessor: HiringManagerTaskProcessor
+		@inject(ToastmasterClubTaskProcessor) private toastmasterClubProcessor: ToastmasterClubTaskProcessor,
+		@inject(HiringManagerTaskProcessor) private hiringManagerProcessor: HiringManagerTaskProcessor,
 	) {
-        this.registerProcessor(this.pincodeProcessor);
-        this.registerProcessor(this.techparkProcessor);
-        this.registerProcessor(this.companyProcessor);
-        this.registerProcessor(this.taskCompletedProcessor);
-        this.registerProcessor(this.terminalProcessor);
-        this.registerProcessor(this.toastmasterClubProcessor);
-        this.registerProcessor(this.hiringManagerProcessor);
-    }
+		this.registerProcessor(this.pincodeProcessor);
+		this.registerProcessor(this.techparkProcessor);
+		this.registerProcessor(this.companyProcessor);
+		this.registerProcessor(this.taskCompletedProcessor);
+		this.registerProcessor(this.terminalProcessor);
+		this.registerProcessor(this.toastmasterClubProcessor);
+		this.registerProcessor(this.hiringManagerProcessor);
+	}
 
 	private registerProcessor(processor: TaskProcessor): void {
 		this.processors.push(processor);
@@ -92,7 +92,7 @@ class WorkflowEngine {
 		if (syncResponse.data.length === 0) {
 			// No more tasks - mark workflow as completed
 			workflow.data.state = 'COMPLETED';
-            workflow.data.pointer = syncResponse.cursor;
+			workflow.data.pointer = syncResponse.cursor;
 			console.log(`No more tasks to process. Marking workflow ${workflow.workflowId} as COMPLETED`);
 			await this.workflowStore.updateWorkflow(workflow);
 			return false;
@@ -123,7 +123,7 @@ class WorkflowEngine {
 
 		const taskExecutionContext: TaskExecutionContext = {
 			workflowId,
-			task
+			task,
 		};
 
 		try {
@@ -131,9 +131,9 @@ class WorkflowEngine {
 			if (result.nextTasks.length > 0) {
 				await this.createFollowUpTasks(task, nextTaskData, result.nextTasks, workflowId);
 			}
-            // Update workflow pointer
-		    workflow.data.pointer = syncResponse.cursor;
-		    await this.workflowStore.updateWorkflow(workflow);
+			// Update workflow pointer
+			workflow.data.pointer = syncResponse.cursor;
+			await this.workflowStore.updateWorkflow(workflow);
 			return true;
 		} catch (error) {
 			console.error(`Error processing task ${task.taskId}:`, error);
@@ -171,7 +171,4 @@ class WorkflowEngine {
 	}
 }
 
-export {
-    WorkflowEngine
-};
-
+export { WorkflowEngine };

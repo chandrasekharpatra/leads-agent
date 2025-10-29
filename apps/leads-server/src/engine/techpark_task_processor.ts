@@ -31,7 +31,7 @@ export class TechparkTaskProcessor implements TaskProcessor {
 		}));
 
 		return {
-			nextTasks: nextTasks
+			nextTasks: nextTasks,
 		};
 	}
 }

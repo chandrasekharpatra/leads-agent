@@ -4,12 +4,12 @@ import { type CompanyStore } from '../storage/company_store';
 import { type PincodeTechparkMappingStore } from '../storage/pincode_techpark_mapping_store';
 import { Company as SavedCompany } from '../storage/stored/stored_company';
 import {
-    CompanyTaskData,
-    HiringManagerTaskData,
-    PincodeTaskData,
-    TaskData,
-    TechparkTaskData,
-    ToastmasterTaskData,
+	CompanyTaskData,
+	HiringManagerTaskData,
+	PincodeTaskData,
+	TaskData,
+	TechparkTaskData,
+	ToastmasterTaskData,
 } from '../storage/stored/stored_task';
 import { Techpark } from '../storage/stored/stored_techpark';
 import { type TechparkCompanyMappingStore } from '../storage/techpark_company_mapping_store';
@@ -32,7 +32,7 @@ export class TaskCompletedProcessor implements TaskProcessor {
 
 	async process(_ctx: RequestContext, _task: TaskData, context: TaskExecutionContext): Promise<TaskResult> {
 		console.log(`Processing TASK_COMPLETED for workflow ${context.workflowId}`);
-        const { completed } = context.task.data;
+		const { completed } = context.task.data;
 		// Extract task data from completed tasks
 		const pincodeTaskData = completed.find((t) => t.type === 'PINCODE') as PincodeTaskData;
 		const techparkTaskData = completed.find((t) => t.type === 'TECH_PARK') as TechparkTaskData;
@@ -43,7 +43,7 @@ export class TaskCompletedProcessor implements TaskProcessor {
 		if (!pincodeTaskData || !techparkTaskData || !companyTaskData) {
 			console.error('Missing required task data for TASK_COMPLETED processing');
 			return {
-				nextTasks: []
+				nextTasks: [],
 			};
 		}
 

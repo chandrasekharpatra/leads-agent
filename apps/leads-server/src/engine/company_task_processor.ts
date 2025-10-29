@@ -24,30 +24,30 @@ export class CompanyTaskProcessor implements TaskProcessor {
 			address: companyTask.companyAddress,
 		};
 
-        if (companyTask.employeeCount < 500) {
-            return {
-                nextTasks: [{
-                    type: "NOOP" as const,
-                }],
-            };
-        }
+		if (companyTask.employeeCount < 500) {
+			return {
+				nextTasks: [
+					{
+						type: 'NOOP' as const,
+					},
+				],
+			};
+		}
 
-        const toastmasterDetail = await this.leadService.findToastmasterClubDetail(company);
+		const toastmasterDetail = await this.leadService.findToastmasterClubDetail(company);
 
-		console.log(
-			`Gathered details for company ${companyTask.companyName}: Toastmaster club: ${toastmasterDetail.hasClub}`,
-		);
+		console.log(`Gathered details for company ${companyTask.companyName}: Toastmaster club: ${toastmasterDetail.hasClub}`);
 
 		const nextTasks: TaskData[] = [
 			{
 				type: 'TOASTMASTER_CLUB' as const,
 				hasClub: toastmasterDetail.hasClub,
 				url: toastmasterDetail.url,
-			}
+			},
 		];
 
 		return {
-			nextTasks
+			nextTasks,
 		};
 	}
 }

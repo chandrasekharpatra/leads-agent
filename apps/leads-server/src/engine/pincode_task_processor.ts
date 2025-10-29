@@ -27,7 +27,7 @@ export class PincodeTaskProcessor implements TaskProcessor {
 		}));
 
 		return {
-			nextTasks
+			nextTasks,
 		};
 	}
 }

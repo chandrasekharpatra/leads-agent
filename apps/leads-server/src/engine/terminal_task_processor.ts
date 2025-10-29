@@ -6,7 +6,7 @@ import { TaskProcessor } from './task_processor';
 @singleton()
 export class TerminalTaskProcessor implements TaskProcessor {
 	canHandle(taskType: string): boolean {
-		return taskType === "NOOP";
+		return taskType === 'NOOP';
 	}
 
 	async process(_ctx: RequestContext, task: TaskData): Promise<TaskResult> {

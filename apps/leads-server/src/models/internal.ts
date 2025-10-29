@@ -1,4 +1,4 @@
-import { Task, TaskData } from "../storage/stored/stored_task";
+import { Task, TaskData } from '../storage/stored/stored_task';
 
 interface TechPark {
 	name: string;
@@ -34,12 +34,21 @@ interface WorkflowContext {
 
 interface TaskExecutionContext {
 	workflowId: string;
-	task: Task
+	task: Task;
 }
 
 interface TaskResult {
 	nextTasks: TaskData[];
 }
 
-export { type Company, type Profile, type RequestContext, type TechPark, type ToastmasterClubDetail, type Task, type WorkflowContext, type TaskResult, type TaskExecutionContext };
-
+export {
+	type Company,
+	type Profile,
+	type RequestContext,
+	type TechPark,
+	type ToastmasterClubDetail,
+	type Task,
+	type WorkflowContext,
+	type TaskResult,
+	type TaskExecutionContext,
+};

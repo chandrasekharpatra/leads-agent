@@ -12,10 +12,10 @@ app.post('/', async (c) => {
 });
 
 app.post('/:workflowId/resume', async (c) => {
-    const workflowId = c.req.param('workflowId');
-    const workflowService = c.var.resolve('WorkflowService') as WorkflowService;
-    c.executionCtx.waitUntil(workflowService.resume({ userId: 'anonymous' }, workflowId as string));
-    return c.json({ status: 'resumed' });
+	const workflowId = c.req.param('workflowId');
+	const workflowService = c.var.resolve('WorkflowService') as WorkflowService;
+	c.executionCtx.waitUntil(workflowService.resume({ userId: 'anonymous' }, workflowId as string));
+	return c.json({ status: 'resumed' });
 });
 
 export default app;
