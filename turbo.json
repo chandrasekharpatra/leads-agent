@@ -19,6 +19,12 @@
     },
     "test": {
       "dependsOn": ["^test"]
+    },
+    "deploy": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "env": ["CLOUDFLARE_API_TOKEN", "JWT_SECRET", "PERPLEXITY_API_KEY", "NUXT_SESSION_PASSWORD"],
+      "outputs": ["dist/**"]
     }
   }
 }
