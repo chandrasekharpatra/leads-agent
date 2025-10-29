@@ -4,7 +4,7 @@ export default defineEventHandler(async (event: H3Event) => {
     const { request, env } = event.context.cloudflare;
     const { url } = request;
     const method = getMethod(event);
-    const path = url.replace("proxy", '');
+    const path = url.replace("/proxy", '');
     const session = await requireUserSession(event);
     
     const body = method !== 'GET' && method !== 'HEAD' ? JSON.stringify(await readBody(event)) : undefined;
@@ -17,6 +17,7 @@ export default defineEventHandler(async (event: H3Event) => {
         },
         body: body
     };
+    console.log(`Proxying request to: ${path} with method: ${method}`);
     const resp = await env.LEADS_SERVER.fetch(path, requestOptions);
     const data = await resp.arrayBuffer();
     event.node.res.statusCode = resp.status;
