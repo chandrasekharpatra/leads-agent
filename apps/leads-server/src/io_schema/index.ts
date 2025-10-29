@@ -14,10 +14,6 @@ const syncWorkflowRequest = z.object({
 	direction: z.enum(['FORWARD', 'BACKWARD']),
 });
 
-const tokenValidationRequest = z.object({
-	token: z.string(),
-});
-
 const schemaValidator = (schema: any) => {
 	return validator('json', (value, c) => {
 		const result = schema.safeParse(value);
@@ -33,4 +29,4 @@ const schemaValidator = (schema: any) => {
 	});
 };
 
-export { createWorkflowRequest, resumeWorkflowRequest, schemaValidator, syncWorkflowRequest, tokenValidationRequest };
+export { createWorkflowRequest, resumeWorkflowRequest, schemaValidator, syncWorkflowRequest };

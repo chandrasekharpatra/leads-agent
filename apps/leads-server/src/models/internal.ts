@@ -42,7 +42,9 @@ interface TaskResult {
 }
 
 interface JwtPayload {
-	userId: string;
+	sub: string;
+	role: string;
+	exp: number;
 }
 
 export {
