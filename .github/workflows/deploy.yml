@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Cloudflare
+    steps:
+      - name: Setting up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Repo checking out
+        uses: actions/checkout@v4    
+      - name: Installing dependencies
+        run: npm ci    
+      - name: Deploying
+        run: npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{secrets.CF_API_TOKEN}}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+          NUXT_SESSION_PASSWORD: ${{ secrets.NUXT_SESSION_PASSWORD }}

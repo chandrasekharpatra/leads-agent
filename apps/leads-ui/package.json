@@ -8,7 +8,7 @@
 		"generate": "nuxt generate",
 		"preview": "npm run build && wrangler dev",
 		"postinstall": "nuxt prepare",
-		"deploy": "npm run build && wrangler deploy",
+		"deploy": "npm run build && wrangler deploy --var NUXT_SESSION_PASSWORD:${NUXT_SESSION_PASSWORD}",
 		"cf-typegen": "wrangler types"
 	},
 	"dependencies": {
