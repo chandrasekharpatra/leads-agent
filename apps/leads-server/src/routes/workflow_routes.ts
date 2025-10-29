@@ -16,8 +16,11 @@ app.post('/', verifyJwt(), schemaValidator(createWorkflowRequest), async (c) => 
 	return c.json({ workflowId: workflow.workflowId });
 });
 
-app.post('/:workflowId/resume', verifyJwt(), schemaValidator(resumeWorkflowRequest), async (c) => {
-	const { workflowId } = c.req.valid('json') as z.infer<typeof resumeWorkflowRequest>;
+app.get('/:workflowId/resume', verifyJwt(), async (c) => {
+	const workflowId = c.req.param("workflowId");
+	if (!workflowId) {
+		return c.json({ error: 'workflowId is required' }, 400);
+	}
 	const jwtPayload = c.get('jwtPayload') as JwtPayload;
 	const workflowService = c.var.resolve('WorkflowService') as WorkflowService;
 	c.executionCtx.waitUntil(workflowService.resume({ userId: jwtPayload.sub }, workflowId as string));
