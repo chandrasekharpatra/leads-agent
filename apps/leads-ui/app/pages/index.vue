@@ -115,7 +115,6 @@ async function onSubmit() {
 <template>
   <div class="container mx-auto">
     <UModal title="Search leads">
-      <div class="mt-8"></div>
       <UButton label="New" color="neutral" variant="subtle" />
       <template #body>
         <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
