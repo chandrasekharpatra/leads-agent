@@ -1,4 +1,4 @@
-declare module '#auth-utils' {
+declare module "#auth-utils" {
   interface User {
     userId: string;
   }
@@ -12,4 +12,4 @@ declare module '#auth-utils' {
   }
 }
 
-export {}
+export {};

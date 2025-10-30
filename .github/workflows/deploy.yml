@@ -25,3 +25,4 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
           NUXT_SESSION_PASSWORD: ${{ secrets.NUXT_SESSION_PASSWORD }}
+          AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}

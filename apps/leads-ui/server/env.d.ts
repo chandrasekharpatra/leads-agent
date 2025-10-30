@@ -1,7 +1,6 @@
 /// <reference types="./worker-configuration.d.ts" />
 
 declare module "h3" {
-
   interface Env extends Cloudflare.Env {
     readonly LEADS_SERVER: Fetcher;
     readonly NUXT_SESSION_PASSWORD: string;
@@ -17,4 +16,4 @@ declare module "h3" {
   }
 }
 
-export { };
+export {};
