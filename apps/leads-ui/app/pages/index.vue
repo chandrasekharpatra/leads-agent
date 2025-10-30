@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { z } from 'zod/v4'; 
+import { z } from 'zod/v4';
 
 interface WorkflowData {
 	state: string;
@@ -25,22 +25,34 @@ definePageMeta({
 	middleware: ['auth']
 });
 
-const types = ref(['DOWNLOAD', 'SEARCH'])
 const workflows = ref<Workflow[]>([])
 
 const schema = z.object({
-  pincode: z.string().min(6, 'Invalid pincode'),
-  type: z.enum(['DOWNLOAD', 'SEARCH']),
+  pincode: z.string().min(6, 'Invalid pincode')
 })
 
 type Schema = z.output<typeof schema>
 
 const state = reactive<Schema>({
-  pincode: '',
-  type: 'SEARCH'
+  pincode: ''
 })
 
 const toast = useToast()
+
+const open = ref(false);
+
+const tabItems = [
+  {
+    label: 'Search',
+    icon: 'i-lucide-search',
+    slot: 'search'
+  },
+  {
+    label: 'Download',
+    icon: 'i-lucide-download',
+    slot: 'download'
+  }
+]
 
 onMounted( async () => {
     await syncWorkflows();
@@ -90,48 +102,63 @@ async function createWorkflow() {
                     description: 'Workflow created successfully',
                 })
                 state.pincode = '';
-                state.type = 'SEARCH';
             }
         }
     });
     await syncWorkflows();
 }
 
-async function onSubmit() {
+async function onSearchSubmit() {
   const result = schema.safeParse(state)
   if (!result.success) {
     // Handle validation errors
     return
   }
-  if (result.data.type === 'DOWNLOAD') {
-    // Handle download logic
-    await navigateTo(`/api/download?pincode=${result.data.pincode}`, { open: { target: '_parent', windowFeatures: { popup: true } } });
-  } else {
-    await createWorkflow();
-    await syncWorkflows();
+  await createWorkflow();
+  open.value = false;
+  await syncWorkflows();
+}
+
+async function onDownloadSubmit() {
+  const result = schema.safeParse(state)
+  if (!result.success) {
+    // Handle validation errors
+    return
   }
+  // Handle download logic
+  await navigateTo(`/api/download?pincode=${result.data.pincode}`, { open: { target: '_parent', windowFeatures: { popup: true } } });
+  open.value = false;
 }
 
 </script>
 <template>
   <div class="container mx-auto">
-    <UModal title="Search leads">
-      <UButton label="New" color="neutral" variant="subtle" />
+    <div class="flex justify-end m-4">
+        <UButton icon="i-lucide-ellipsis-vertical" color="neutral" variant="subtle" @click="open = true" />
+    </div>
+    <UModal title="Search leads" v-model:open="open">
       <template #body>
-        <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-          <UFormField label="Type" name="type">
-            <UInputMenu v-model="state.type" :items="types"/>
-          </UFormField>
+        <UTabs :items="tabItems">
+          <template #search class="">
+            <UForm :schema="schema" :state="state" class="items-center space-y-4" @submit="onSearchSubmit">
+              <UFormField label="Pincode" name="pincode">
+                <UInput v-model="state.pincode" />
+              </UFormField>
 
-          <UFormField label="Pincode" name="pincode">
-            <UInput v-model="state.pincode" />
-          </UFormField>
+              <UButton label="Search" type="submit" />
+            </UForm>
+          </template>
+          <template #download>
+            <UForm :schema="schema" :state="state" class="space-y-4" @submit="onDownloadSubmit">
+              <UFormField label="Pincode" name="pincode">
+                <UInput v-model="state.pincode" />
+              </UFormField>
 
-          <UButton type="submit">
-            Submit
-          </UButton>
-        </UForm>
-      </template>  
+              <UButton label="Download" type="submit" />
+            </UForm>
+          </template>
+        </UTabs>
+      </template>
     </UModal>
     <div class="mt-8">
       <h2 class="text-2xl font-bold mb-4">Workflows</h2>
