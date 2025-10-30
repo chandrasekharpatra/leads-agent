@@ -33,6 +33,8 @@ const schema = z.object({
 
 type Schema = z.output<typeof schema>
 
+const processing = ref(false);
+
 const state = reactive<Schema>({
   pincode: ''
 })
@@ -77,6 +79,7 @@ async function syncWorkflows() {
 }
 
 async function createWorkflow() {
+    processing.value = true;
     await $fetch('/proxy/v1/workflows', {
         method: 'POST',
         body: {
@@ -106,6 +109,7 @@ async function createWorkflow() {
         }
     });
     await syncWorkflows();
+    processing.value = false;
 }
 
 async function onSearchSubmit() {
@@ -114,9 +118,11 @@ async function onSearchSubmit() {
     // Handle validation errors
     return
   }
+  processing.value = true;
   await createWorkflow();
   open.value = false;
   await syncWorkflows();
+  processing.value = false;
 }
 
 async function onDownloadSubmit() {
@@ -145,7 +151,7 @@ async function onDownloadSubmit() {
                 <UInput v-model="state.pincode" />
               </UFormField>
 
-              <UButton label="Search" type="submit" />
+              <UButton label="Search" type="submit" :disabled="processing"/>
             </UForm>
           </template>
           <template #download>
@@ -154,7 +160,7 @@ async function onDownloadSubmit() {
                 <UInput v-model="state.pincode" />
               </UFormField>
 
-              <UButton label="Download" type="submit" />
+              <UButton label="Download" type="submit" :disabled="processing"/>
             </UForm>
           </template>
         </UTabs>
