@@ -13,7 +13,7 @@ app.post('/', verifyJwt(), schemaValidator(createWorkflowRequest), async (c) => 
 	const jwtPayload = c.get('jwtPayload') as JwtPayload;
 	const workflow = await workflowService.init({ userId: jwtPayload.sub }, pincode);
 	const message = { workflowId: workflow.workflowId };
-	// await c.env.TM_LEADS_WORKFLOW.send(message, { contentType: 'json' });
+	await c.env.TM_LEADS_WORKFLOW.send(message, { contentType: 'json' });
 	return c.json({ workflowId: workflow.workflowId });
 });
 
