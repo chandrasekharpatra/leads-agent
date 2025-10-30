@@ -4,10 +4,9 @@
  */
 {
 	"$schema": "../../node_modules/wrangler/config-schema.json",
-	"name": "leads-server",
+	"name": "leads-workflow-consumer",
 	"main": "src/index.ts",
-	"compatibility_date": "2025-10-14",
-	"compatibility_flags": ["nodejs_compat"],
+	"compatibility_date": "2025-10-29",
 	"observability": {
 		"enabled": true
 	},
@@ -26,16 +25,7 @@
 	 * Environment Variables
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
 	 */
-	"vars": {
-		"JWT_SECRET": "",
-		"PERPLEXITY_API_KEY": ""
-	},
-	"queues": {
-		"producers": [{
-			"binding": "TM_LEADS_WORKFLOW",
-			"queue": "tm-leads-workflow"
-		}]
-	},
+	"vars": { "AUTH_TOKEN": "production_value" },
 	/**
 	 * Note: Use secrets to store sensitive data.
 	 * https://developers.cloudflare.com/workers/configuration/secrets/
@@ -49,12 +39,21 @@
 	 * Service Bindings (communicate between multiple Workers)
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
 	 */
-	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
-	 "d1_databases": [
-		{
-			"binding": "DB",
-			"database_name": "toastmasters-leads",
-			"database_id": "cd32fcd5-e2b3-44fb-96de-5921c8473ce1"
+	"services": [
+		{ 
+			"binding": "LEADS_SERVER",
+			"service": "leads-server"
 		}
 	],
+	"queues": {
+		"consumers": [
+			{
+				"queue": "tm-leads-workflow",
+				"max_batch_size": 1,
+				"max_batch_timeout": 60,
+				"max_retries": 1,
+				"retry_delay": 120
+			}
+		]
+	}
 }

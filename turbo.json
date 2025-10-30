@@ -23,7 +23,7 @@
     "deploy": {
       "cache": false,
       "dependsOn": ["^build"],
-      "env": ["CLOUDFLARE_API_TOKEN", "JWT_SECRET", "PERPLEXITY_API_KEY", "NUXT_SESSION_PASSWORD"],
+      "env": ["CLOUDFLARE_API_TOKEN", "JWT_SECRET", "PERPLEXITY_API_KEY", "NUXT_SESSION_PASSWORD", "AUTH_TOKEN"],
       "outputs": ["dist/**"]
     }
   }

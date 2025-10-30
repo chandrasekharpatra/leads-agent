@@ -4,6 +4,7 @@ import { z } from 'zod/v4';
 interface WorkflowData {
 	state: string;
 	pointer?: string;
+  pincode?: string;
 }
 
 interface Workflow {
@@ -139,6 +140,7 @@ async function onSubmit() {
         <li v-for="workflow in workflows" :key="workflow.workflowId" class="p-4 border rounded-lg">
           <div><strong>Workflow ID:</strong> {{ workflow.workflowId }}</div>
           <div><strong>State:</strong> {{ workflow.data.state }}</div>
+          <div><strong>Pincode:</strong> {{ workflow.data.pincode || 'N/A' }}</div>
           <div><strong>Created At:</strong> {{ new Date(workflow.createdAt).toLocaleString() }}</div>
           <div><strong>Updated At:</strong> {{ new Date(workflow.updatedAt).toLocaleString() }}</div>
         </li>
