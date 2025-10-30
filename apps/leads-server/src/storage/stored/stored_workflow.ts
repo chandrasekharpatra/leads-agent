@@ -2,6 +2,7 @@ type WorkflowState = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED';
 
 interface WorkflowData {
 	state: WorkflowState;
+	failedCount?: number;
 	pincode?: string;
 	pointer?: string;
 }

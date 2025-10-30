@@ -1,5 +1,6 @@
 import { inject, singleton } from 'tsyringe-neo';
 import { RequestContext, TaskExecutionContext } from '../models/internal';
+import { type QueueService } from '../services/queue_service';
 import { Task, TaskData } from '../storage/stored/stored_task';
 import { Workflow } from '../storage/stored/stored_workflow';
 import { type TaskStore } from '../storage/task_store';
@@ -30,6 +31,7 @@ class WorkflowEngine {
 		@inject(TerminalTaskProcessor) private terminalProcessor: TerminalTaskProcessor,
 		@inject(ToastmasterClubTaskProcessor) private toastmasterClubProcessor: ToastmasterClubTaskProcessor,
 		@inject(HiringManagerTaskProcessor) private hiringManagerProcessor: HiringManagerTaskProcessor,
+		@inject('QueueService') private readonly queueService: QueueService,
 	) {
 		this.registerProcessor(this.pincodeProcessor);
 		this.registerProcessor(this.techparkProcessor);
@@ -45,8 +47,6 @@ class WorkflowEngine {
 	}
 
 	async execute(ctx: RequestContext, workflowId: string): Promise<void> {
-		let iterations = 0;
-		const MAX_ITERATIONS = 1000;
 
 		console.log(`Starting workflow execution for workflow ID ${workflowId}`);
 
@@ -59,19 +59,23 @@ class WorkflowEngine {
 		workflow.data.state = 'IN_PROGRESS';
 		await this.workflowStore.updateWorkflow(workflow);
 
-		while (iterations < MAX_ITERATIONS) {
-			console.log(`Workflow execution iteration ${iterations} for workflow ID ${workflowId}`);
-
+		try {
 			const hasMoreTasks = await this.processNextTask(ctx, workflow);
-			if (!hasMoreTasks) {
-				console.log(`Workflow ${workflowId} completed after ${iterations} iterations`);
-				break;
+			if (hasMoreTasks) {
+				await this.queueService.enqueueWorkflowExecution(workflowId);
+			} else {
+				console.log(`Workflow ${workflowId} execution completed`);
 			}
-			iterations++;
-		}
-
-		if (iterations >= MAX_ITERATIONS) {
-			console.error(`Workflow ${workflowId} exceeded maximum iterations (${MAX_ITERATIONS})`);
+		} catch (error) {
+			console.error(`Error during workflow ${workflowId} execution:`, error);
+			if (workflow.data.failedCount && workflow.data.failedCount > 10) {
+					// Handle failed workflows
+					console.error(`Workflow ${workflowId} has failed ${workflow.data.failedCount} times not retrying further.`);
+				} else {
+					workflow.data.failedCount = (workflow.data.failedCount || 0) + 1;
+					await this.workflowStore.updateWorkflow(workflow);
+					await this.queueService.enqueueWorkflowExecution(workflowId);
+				}
 		}
 	}
 

@@ -15,6 +15,7 @@ import { D1UserWorkflowMappingStore, UserWorkflowMappingStore } from './storage/
 import { D1WorkflowStore, WorkflowStore } from './storage/workflow_store';
 import { D1WorkflowTaskMappingStore, WorkflowTaskMappingStore } from './storage/workflow_task_mapping_store';
 import { TaskService, TaskServiceImpl } from './services/task_service';
+import { CloudflareQueueService, QueueService } from './services/queue_service';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -24,7 +25,7 @@ app.use('*', async (c, next) => {
 		container.register<string>('PERPLEXITY_API_KEY', { useValue: c.env.PERPLEXITY_API_KEY });
 		container.register<string>('JWT_SECRET', { useValue: c.env.JWT_SECRET });
 		container.register<D1Database>('DB', { useValue: c.env.DB });
-
+		container.register<Queue>('TM_LEADS_WORKFLOW_QUEUE', { useValue: c.env.TM_LEADS_WORKFLOW });
 		// stores
 		container.register<TechParkStore>('TechParkStore', { useClass: D1TechParkStore });
 		container.register<PincodeTechparkMappingStore>('PincodeTechparkMappingStore', { useClass: D1PincodeTechparkMappingStore });
@@ -39,6 +40,7 @@ app.use('*', async (c, next) => {
 		container.register<LeadService>('LeadService', { useClass: PerplexityLeadService });
 		container.register<WorkflowService>('WorkflowService', { useClass: WorkflowServiceImpl });
 		container.register<TaskService>('TaskService', { useClass: TaskServiceImpl });
+		container.register<QueueService>('QueueService', { useClass: CloudflareQueueService });
 
 		// llm providers
 		const perplexity = createPerplexity({

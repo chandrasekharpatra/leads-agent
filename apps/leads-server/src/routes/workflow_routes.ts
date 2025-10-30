@@ -4,6 +4,7 @@ import { verifyJwt } from '../auth/auth';
 import { createWorkflowRequest, schemaValidator, syncWorkflowRequest } from '../io_schema';
 import { JwtPayload } from '../models/internal';
 import { WorkflowService } from '../services/workflow_service';
+import { QueueService } from '../services/queue_service';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -12,8 +13,8 @@ app.post('/', verifyJwt(), schemaValidator(createWorkflowRequest), async (c) => 
 	const workflowService = c.var.resolve('WorkflowService') as WorkflowService;
 	const jwtPayload = c.get('jwtPayload') as JwtPayload;
 	const workflow = await workflowService.init({ userId: jwtPayload.sub }, pincode);
-	const message = { workflowId: workflow.workflowId };
-	await c.env.TM_LEADS_WORKFLOW.send(message, { contentType: 'json' });
+	const queueService = c.var.resolve<QueueService>('QueueService') as QueueService;
+	await queueService.enqueueWorkflowExecution(workflow.workflowId);
 	return c.json({ workflowId: workflow.workflowId });
 });
 
