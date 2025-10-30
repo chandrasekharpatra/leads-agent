@@ -46,7 +46,7 @@ class WorkflowServiceImpl implements WorkflowService {
 	}
 
 	async init(ctx: RequestContext, pincode: string): Promise<Workflow> {
-		const workflow = await this.startWorkflow(ctx, { state: 'PENDING' });
+		const workflow = await this.startWorkflow(ctx, { state: 'PENDING', pincode });
 		const pincodeTaskData: TaskData = {
 			type: 'PINCODE',
 			pincode,
