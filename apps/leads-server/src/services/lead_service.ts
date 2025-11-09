@@ -10,7 +10,7 @@ import { type TechparkCompanyMappingStore } from '../storage/techpark_company_ma
 
 const techParksSchema = z.object({
 	name: z.string().describe('Name of the tech park'),
-	address: z.string().describe('Address of the tech park in India'),
+	address: z.string().describe('Address of the tech park in Bangalore, India'),
 });
 
 const listTechParkResponseSchema = z.object({
@@ -29,8 +29,8 @@ const listCompanyResponseSchema = z.object({
 });
 
 const hasToastmasterClubResponseSchema = z.object({
-	hasClub: z.boolean().describe('True if the company has a Toastmaster club else false'),
-	url: z.string().optional().describe('URL of the Toastmaster club if available else undefined'),
+	hasClub: z.boolean().describe('True if the company has a Toastmasters club in Bangalore'),
+	url: z.string().optional().describe('URL of the Toastmasters club if available else na'),
 });
 
 const findHiringManagerHeadResponseSchema = z.object({
@@ -39,7 +39,7 @@ const findHiringManagerHeadResponseSchema = z.object({
 			name: z
 				.string()
 				.describe(
-					'Name of the hiring manager or talent acquisition head or Learning and development head or anyone who is relevant for hiring',
+					'Name of the Learning and development head of the company in Bangalore, else provide na if not found',
 				),
 			linkedInUrl: z.string().optional().describe('LinkedIn URL of the person if available'),
 		}),
@@ -96,7 +96,7 @@ class PerplexityLeadService implements LeadService {
 
 	async findToastmasterClubDetail(company: Company): Promise<ToastmasterClubDetail> {
 		console.log('Finding Toastmaster club detail for company:', company);
-		const prompt = `Does the company ${company.name} with address: ${company.address} has a Toastmaster club? Return the response in strictly json format as per the schema.`;
+		const prompt = `Does ${company.name} have a Toastmasters club in Bangalore ?`;
 		try {
 			const {
 				object: { hasClub, url },
@@ -118,8 +118,8 @@ class PerplexityLeadService implements LeadService {
 	}
 
 	async findHiringManagerHead(company: Company): Promise<Profile[]> {
-		console.log('Finding hiring manager head for company:', company);
-		const prompt = `Give me the hiring manager head or talent acquisition head or Learning and development head for the company ${company.name} located at ${company.address} in India. Return the response in strictly json format as per the schema.`;
+		console.log('Finding L&D head for company:', company);
+		const prompt = `Give me the Learning and development head for the ${company.name}, Bangalore`;
 		try {
 			const {
 				object: { profiles },
