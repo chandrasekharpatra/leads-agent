@@ -31,6 +31,15 @@ export const generateTechparkId = (techparkName: string, address?: string): stri
 		.trim()
 		.replace(/[^\w\s]/g, '')
 		.replace(/\s+/g, '');
+
+	const normalizedAddress = address
+		? address
+				.toLowerCase()
+				.trim()
+				.replace(/[^\w\s]/g, '')
+				.replace(/\s+/g, '')
+		: '';
+
 	const input = normalized;
 	const hash = createHash('sha256').update(input).digest('hex').substring(0, 12);
 
