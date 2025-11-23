@@ -19,7 +19,7 @@ export const generateCompanyId = (companyName: string, address?: string): string
 		.replace(/[^\w\s]/g, '')
 		.replace(/\s+/g, '');
 
-	const input = address ? `${normalized}:${address.toLowerCase().trim()}` : normalized;
+	const input = normalized;
 	const hash = createHash('sha256').update(input).digest('hex').substring(0, 12);
 
 	return `C${hash}`;
@@ -40,7 +40,7 @@ export const generateTechparkId = (techparkName: string, address?: string): stri
 				.replace(/\s+/g, '')
 		: '';
 
-	const input = address ? `${normalized}:${normalizedAddress}` : normalized;
+	const input = normalized;
 	const hash = createHash('sha256').update(input).digest('hex').substring(0, 12);
 
 	return `TP${hash}`;

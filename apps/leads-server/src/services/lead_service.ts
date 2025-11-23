@@ -96,7 +96,7 @@ class PerplexityLeadService implements LeadService {
 
 	async findToastmasterClubDetail(company: Company): Promise<ToastmasterClubDetail> {
 		console.log('Finding Toastmaster club detail for company:', company);
-		const prompt = `Does ${company.name} have a Toastmasters club in Bangalore ?`;
+		const prompt = `Does the company ${company.name} has a Toastmasters club in Bangalore, India ?`;
 		try {
 			const {
 				object: { hasClub, url },
