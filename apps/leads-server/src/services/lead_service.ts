@@ -78,7 +78,7 @@ class PerplexityLeadService implements LeadService {
 
 	async findCompaniesInTechPark(techpark: TechPark): Promise<Company[]> {
 		console.log('Finding companies in tech park:', techpark);
-		const prompt = `List all the companies in the tech park ${techpark.name} located at ${techpark.address}`;
+		const prompt = `List all the companies in the tech park ${techpark.name} Bangalore, India`;
 		const {
 			object: { companies },
 		} = await generateObject({
