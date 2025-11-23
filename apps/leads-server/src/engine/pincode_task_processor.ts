@@ -17,7 +17,7 @@ export class PincodeTaskProcessor implements TaskProcessor {
 
 		console.log(`Processing PINCODE task for pincode: ${pincodeTask.pincode}`);
 
-		const techParks = await this.leadService.findTechParksInPincode(pincodeTask.pincode, 10);
+		const techParks = await this.leadService.findTechParksInPincode(pincodeTask.pincode, 2);
 		console.log(`Found ${techParks.length} tech parks in pincode ${pincodeTask.pincode}`);
 
 		const nextTasks: TaskData[] = techParks.map((techPark) => ({
