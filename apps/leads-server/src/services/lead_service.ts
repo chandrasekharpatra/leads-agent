@@ -24,7 +24,7 @@ const listCompanyResponseSchema = z.object({
 			industry: z.string().describe('Industry of the company'),
 			employeeCount: z.number().describe('Number of employees in the company'),
 			address: z.string().describe('Address of the company in the tech park'),
-		}),
+		}).describe('List of all the companies in the tech park.'),
 	),
 });
 
@@ -78,7 +78,7 @@ class PerplexityLeadService implements LeadService {
 
 	async findCompaniesInTechPark(techpark: TechPark): Promise<Company[]> {
 		console.log('Finding companies in tech park:', techpark);
-		const prompt = `List companies in the tech park ${techpark.name} located at ${techpark.address} along with their details.`;
+		const prompt = `List all the companies in the tech park ${techpark.name} located at ${techpark.address}`;
 		const {
 			object: { companies },
 		} = await generateObject({
